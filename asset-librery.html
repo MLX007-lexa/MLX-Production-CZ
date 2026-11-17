@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="cs">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>MLX Assets</title>
 <!--seo-->
-<meta name="description" content="Cinematic footage, sound and stills in full resolution. One licence covers every asset: commercial use, worldwide, perpetual, no attribution.">
+<meta name="description" content="Filmové záběry, zvuky a fotografie v plném rozlišení. Jedna licence pokrývá všechny assety: komerční využití, celosvětově, trvale, bez uvádění autora.">
 <link rel="canonical" href="https://mlxassets.com/">
 <meta property="og:site_name" content="MLX Assets">
 <meta property="og:type" content="website">
-<meta property="og:title" content="MLX Assets — Footage, sound and stills">
-<meta property="og:description" content="Cinematic footage, sound and stills in full resolution. One licence covers every asset: commercial use, worldwide, perpetual, no attribution.">
+<meta property="og:title" content="MLX Assets — Záběry, zvuky a fotografie">
+<meta property="og:description" content="Filmové záběry, zvuky a fotografie v plném rozlišení. Jedna licence pokrývá všechny assety: komerční využití, celosvětově, trvale, bez uvádění autora.">
 <meta property="og:url" content="https://mlxassets.com/">
 <meta property="og:image" content="https://mlxassets.com/og/default.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -426,33 +426,86 @@ header .wrap{gap:16px}
 footer{content-visibility:auto;contain-intrinsic-size:auto 420px}
 @media(pointer:coarse){.ctl button{min-height:44px;min-width:56px}.bar{height:44px}.acts2 .ic{width:44px;height:44px}.lnk{padding:10px 0}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+/* ---------- fade through black between sites + region prompt (matches the MLX Production landing page) ---------- */
+.blk{position:fixed;inset:0;z-index:9999;background:#000;opacity:0;pointer-events:none;animation:blkin .9s cubic-bezier(.4,0,.2,1) both}
+@keyframes blkin{from{opacity:1}to{opacity:0}}
+@keyframes blkout{from{opacity:0}to{opacity:1}}
+body.dk .blk{pointer-events:auto;animation:blkout .9s cubic-bezier(.4,0,.2,1) both}
+#region{position:fixed;z-index:60;top:calc(68px + env(safe-area-inset-top,0px));right:24px;padding:14px;
+  background:rgba(18,18,17,.94);border:1px solid rgba(239,237,232,.28);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  opacity:0;transform:translateY(-8px);pointer-events:none;
+  transition:opacity .9s cubic-bezier(.4,0,.2,1),transform .9s cubic-bezier(.4,0,.2,1)}
+#region.on{opacity:1;transform:none;pointer-events:auto;transition-duration:.6s}
+#region[hidden]{display:none}
+.rgn-bar{position:absolute;left:0;bottom:0;height:2px;width:100%;background:#EFEDE8;opacity:.9;box-shadow:0 0 8px 1px rgba(239,237,232,.55),0 -2px 10px rgba(239,237,232,.25);transform-origin:left;will-change:transform}
+.rgn-sw{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 14px;
+  border:1px solid rgba(239,237,232,.85);overflow:hidden;isolation:isolate;transition:color .3s;
+  font:400 11px "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:#EFEDE8}
+.rgn-sw::before{content:"";position:absolute;inset:0;z-index:-1;background:#EFEDE8;clip-path:polygon(0 0,0 0,-34px 100%,0 100%);transition:clip-path .5s cubic-bezier(.65,0,.25,1)}
+.rgn-sw:hover,.rgn-sw:focus-visible{color:#121211}
+.rgn-sw:hover::before,.rgn-sw:focus-visible::before{clip-path:polygon(0 0,calc(100% + 34px) 0,100% 100%,0 100%)}
+.rgn-sw svg{flex:none;width:12px;height:12px;transition:transform .4s cubic-bezier(.65,0,.25,1)}
+.rgn-sw:hover svg,.rgn-sw:focus-visible svg{transform:translateX(4px)}
+.rgn-x{position:absolute;top:-11px;right:-11px;width:22px;height:22px;display:grid;place-items:center;background:#121211;border:1px solid rgba(239,237,232,.28);cursor:pointer;color:#EFEDE8;overflow:hidden;isolation:isolate;transition:color .3s,border-color .3s}
+.rgn-x::before{content:"";position:absolute;inset:0;z-index:-1;background:#E5484D;clip-path:polygon(0 0,0 0,-10px 100%,0 100%);transition:clip-path .45s cubic-bezier(.65,0,.25,1)}
+.rgn-x:hover,.rgn-x:focus-visible{color:#121211;border-color:#E5484D}
+.rgn-x:hover::before,.rgn-x:focus-visible::before{clip-path:polygon(0 0,calc(100% + 10px) 0,100% 100%,0 100%)}
+.rgn-x svg{width:9px;height:9px}
+@media (max-width:760px){#region{left:16px;right:24px;top:auto;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateY(8px)}#region.on{transform:none}}
+/* currency switch in the header: compact, faint outline, a slanted thumb slides between the two options */
+.cur{position:relative;isolation:isolate;display:inline-grid;grid-template-columns:1fr 1fr;flex:none;border:1px solid var(--line);font:400 10px "JetBrains Mono",monospace;letter-spacing:.1em;text-transform:uppercase}
+nav .cur{margin-left:auto;margin-right:-12px}
+nav #gb{margin-left:0}
+.cur::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;left:0;width:50%;background:var(--tx);clip-path:polygon(0 0,100% 0,calc(100% - 7px) 100%,0 100%)}
+.cur[data-i="1"]::before{transform:translateX(100%);clip-path:polygon(7px 0,100% 0,100% 100%,0 100%)}
+.cur.ready::before{transition:transform .5s cubic-bezier(.65,0,.25,1),clip-path .5s cubic-bezier(.65,0,.25,1)}
+.cur button{padding:6px 11px;line-height:1;color:var(--mute);text-align:center}
+.cur.ready button{transition:color .35s}
+/* light surface: solid black outline; over the dark hero it keeps the faint light one */
+.cur{border-color:#121211;transition:border-color .3s}
+.dark .cur{border-color:var(--line)}
+.cur button:hover{color:var(--tx)}
+.cur button[aria-pressed="true"],.cur button[aria-pressed="true"]:hover{color:var(--bg)}
+@media(pointer:coarse){.cur button{padding:10px 14px}}
+@media(max-width:820px){nav .cur{margin:16px 0 0;align-self:flex-start}nav .cur+#gb{margin-top:12px}}
+@media (prefers-reduced-motion:reduce){.blk,body.dk .blk{animation:none}body.dk .blk{opacity:1}#region{transition:none}}
 </style>
 </head>
 <body>
-<a class="skip" href="#app">Skip to content</a>
+<div class="blk" aria-hidden="true"></div>
+<a class="skip" href="#app">Přeskočit na obsah</a>
 <header id="hd"><div class="wrap">
-<a class="logo" href="#home" aria-label="MLX Assets home">MLX ASSETS<i></i></a>
+<a class="logo" href="#home" aria-label="MLX Assets – domů">MLX ASSETS<i></i></a>
 <button class="menu mono" id="menu" aria-expanded="false" aria-controls="nav">Menu</button>
-<nav id="nav" class="mono" aria-label="Main">
-<div class="links"><a href="#library" data-n="library">Library</a><a href="#collections" data-n="collections">Collections</a><a href="#compatibility" data-n="compatibility">Compatibility</a><a href="#about" data-n="about">About</a></div>
-<a class="btn" id="gb" href="#licence" data-n="licence">Get licence</a>
+<nav id="nav" class="mono" aria-label="Hlavní navigace">
+<div class="links"><a href="#library" data-n="library">Knihovna</a><a href="#collections" data-n="collections">Kolekce</a><a href="#compatibility" data-n="compatibility">Kompatibilita</a><a href="#about" data-n="about">O nás</a></div>
+<div class="cur" id="cur" role="group" aria-label="Měna"><button type="button" data-c="CZK" aria-pressed="true">CZK</button><button type="button" data-c="EUR" aria-pressed="false">EUR</button></div>
+<a class="btn" id="gb" href="#licence" data-n="licence">Získat licenci</a>
 </nav>
 </div></header>
 
 <main id="app" tabindex="-1"></main>
 
 <footer class="dark"><div class="slate"></div><div class="wrap">
-<div class="fnews"><div><div class="mono">Newsletter</div><h3>New drops, once a month.</h3></div>
-<form id="nl" novalidate><div class="search"><input id="em" type="email" placeholder="Email address" aria-label="Email address" autocomplete="email" aria-describedby="nm"><button class="mono">Join</button></div><div class="msg mono" id="nm" role="status"></div></form></div>
+<div class="fnews"><div><div class="mono">Newsletter</div><h3>Novinky jednou měsíčně.</h3></div>
+<form id="nl" novalidate><div class="search"><input id="em" type="email" placeholder="E-mailová adresa" aria-label="E-mailová adresa" autocomplete="email" aria-describedby="nm"><button class="mono">Odebírat</button></div><div class="msg mono" id="nm" role="status"></div></form></div>
 <div class="fcols">
-<div><div class="mono">Library</div><a href="#library-video">Video</a><a href="#library-audio">Audio</a><a href="#library-photo">Photo</a><a href="#collections">Collections</a></div>
-<div><div class="mono">Company</div><a href="#about">About</a><a href="mailto:hello@mlxassets.com">Contact</a></div>
-<div><div class="mono">Licence</div><a href="#licence">Get the licence</a><a href="#compatibility">Compatibility</a><a href="#about">Terms</a><a href="#faq">FAQ</a></div>
+<div><div class="mono">Knihovna</div><a href="#library-video">Video</a><a href="#library-audio">Zvuk</a><a href="#library-photo">Fotografie</a><a href="#collections">Kolekce</a></div>
+<div><div class="mono">Společnost</div><a href="#about">O nás</a><a href="mailto:assets@mlxproduction.cz">Kontakt</a></div>
+<div><div class="mono">Licence</div><a href="#licence">Získat licenci</a><a href="#compatibility">Kompatibilita</a><a href="#about">Podmínky</a><a href="#faq">FAQ</a></div>
 </div>
-<div class="fbar mono"><span>© 2026 MLX Assets</span><a href="#about">Licence</a><a href="mailto:hello@mlxassets.com">Contact</a><a href="#about">Terms</a></div>
+<div class="fbar mono"><span>© 2026 MLX Assets</span><a href="#about">Licence</a><a href="mailto:assets@mlxproduction.cz">Kontakt</a><a href="#about">Podmínky</a></div>
 </div></footer>
 <div id="toast" role="status" aria-live="polite"></div>
 <div id="rl" class="sr" aria-live="polite"></div>
+
+<div id="region" role="region" aria-label="Výběr regionu">
+  <a class="rgn-sw" href="https://mlxproduction.eu/asset-librery.html" id="rgn-go">Přepnout na EU verzi
+    <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 9h14M10 3l6 6-6 6"/></svg></a>
+  <button type="button" class="rgn-x" id="rgn-x" aria-label="Zavřít">
+    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 2l8 8M10 2l-8 8"/></svg></button>
+  <span class="rgn-bar" id="rgn-bar" aria-hidden="true"></span>
+</div>
 
 <script>
 (() => {
@@ -468,18 +521,18 @@ const app = $('#app');
 const SITE = 'https://mlxassets.com'; // change this if the site lives on another domain
 const ROUTE0 = ($('meta[name="mlx-route"]') || {}).content || ''; // set on the pre-built asset and collection pages
 const pageUrl = (kind, i) => kind === 'asset' ? `${SITE}/asset/${slug(D[i].n)}/` : kind === 'collection' ? `${SITE}/collection/${slug(CO[i])}/` : `${SITE}/`;
-const DEF_DESC = 'Cinematic footage, sound and stills in full resolution. One licence covers every asset: commercial use, worldwide, perpetual, no attribution.';
+const DEF_DESC = 'Filmové záběry, zvuky a fotografie v plném rozlišení. Jedna licence pokrývá všechny assety: komerční využití, celosvětově, trvale, bez uvádění autora.';
 function seoFor(name, arg) {
   let url = SITE + '/', desc = DEF_DESC, img = `${SITE}/og/default.jpg`, ld = null;
   const a = name === 'asset' && D[arg - 1], c = name === 'collection' && CO[arg - 1] ? arg - 1 : -1;
   if (a) {
     url = pageUrl('asset', arg - 1); img = `${SITE}/og/asset-${arg}.jpg`;
-    desc = `${a.n}: ${a.t.toLowerCase()}, ${a.s}. ${DELIVERY[a.t]}. From the ${CO[a.c]} collection, included in the MLX licence (commercial use, worldwide, perpetual).`;
+    desc = `${a.n}: ${TL[a.t].toLowerCase()}, ${a.s}. ${DELIVERY[a.t]}. Z kolekce ${CO[a.c]}, součást licence MLX (komerční využití, celosvětově, trvale).`;
     ld = {'@context': 'https://schema.org', '@type': {Video: 'VideoObject', Audio: 'AudioObject', Photo: 'ImageObject'}[a.t], name: a.n, description: desc, keywords: a.k.split(' ').join(', '), thumbnailUrl: img, url, isPartOf: {'@type': 'Collection', name: CO[a.c]}, license: SITE + '/#licence', publisher: {'@type': 'Organization', name: 'MLX Assets'}};
   } else if (c >= 0) {
     const n = count(x => x.c === c);
     url = pageUrl('collection', c); img = `${SITE}/og/collection-${c + 1}.jpg`;
-    desc = `${CO[c]}: ${n} ${n === 1 ? 'asset' : 'assets'} of footage, sound and stills, included in the MLX licence.`;
+    desc = `${CO[c]}: ${n} ${pl(n, 'asset', 'assety', 'assetů')} – záběry, zvuky a fotografie, součást licence MLX.`;
   }
   const set = (sel, attr, v) => { const e = $(sel); if (e) e.setAttribute(attr, v); };
   set('meta[name="description"]', 'content', desc); set('link[rel="canonical"]', 'href', url);
@@ -492,25 +545,30 @@ function seoFor(name, arg) {
 }
 
 /* ---------- data: the single source of truth ---------- */
-const CO = ['Coastal Fog','Night Transit','Salt Flats','Low Pulse','Concrete','Dust & Light','Slow Tide','Glass Corridor'];
+const CO = ['Pobřežní mlha','Noční doprava','Solné pláně','Tichý puls','Beton','Prach a světlo','Pomalý příliv','Skleněná chodba'];
 const D = [ // name, type, spec, price, collection, tags
-  ['Coastal fog, dawn','Video','4K · 00:14',49,0,'aerial coast mist'],
-  ['Night transit','Video','6K · 00:09',49,1,'night city traffic'],
-  ['Low pulse, ambient','Audio','02:41 · 96 BPM',19,3,'ambient drone'],
-  ['Concrete study','Photo','8256 × 5504',15,4,'texture abstract'],
-  ['Rain on metal','Audio','00:48 · SFX',9,4,'rain texture sfx'],
-  ['Salt flats','Photo','6000 × 4000',15,2,'aerial landscape abstract'],
-  ['Glass corridor','Video','8K · 00:11',59,7,'architecture night'],
-  ['Slow tide','Video','4K · 00:20',49,6,'aerial coast'],
-  ['Dust and light','Photo','7000 × 4667',15,5,'texture abstract'],
-  ['Sub drone','Audio','03:12 · 70 BPM',19,3,'ambient drone'],
-  ['City haze','Video','6K · 00:16',49,1,'city aerial'],
-  ['Cold lens','Photo','6240 × 4160',15,7,'abstract texture']
+  ['Pobřežní mlha, úsvit','Video','4K · 00:14',49,0,'letecké pobřeží mlha'],
+  ['Noční doprava','Video','6K · 00:09',49,1,'noc město doprava'],
+  ['Tichý puls, ambient','Audio','02:41 · 96 BPM',19,3,'ambient drone'],
+  ['Studie betonu','Photo','8256 × 5504',15,4,'textura abstrakce'],
+  ['Déšť na kovu','Audio','00:48 · SFX',9,4,'déšť textura sfx'],
+  ['Solné pláně','Photo','6000 × 4000',15,2,'letecké krajina abstrakce'],
+  ['Skleněná chodba','Video','8K · 00:11',59,7,'architektura noc'],
+  ['Pomalý příliv','Video','4K · 00:20',49,6,'letecké pobřeží'],
+  ['Prach a světlo','Photo','7000 × 4667',15,5,'textura abstrakce'],
+  ['Hluboký drone','Audio','03:12 · 70 BPM',19,3,'ambient drone'],
+  ['Městský opar','Video','6K · 00:16',49,1,'město letecké'],
+  ['Studený objektiv','Photo','6240 × 4160',15,7,'abstrakce textura']
 ].map(([n, t, s, p, c, k]) => ({n, t, s, p, c, k}));
-const COMPAT = [['Premiere Pro', 'Video + audio', 'ProRes 422 HQ, H.264 and 24-bit WAV drop straight onto the timeline.'], ['DaVinci Resolve', 'Video + audio', 'ProRes and RAW stills open natively. WAV imports at full 48 kHz.'], ['Final Cut Pro', 'Video + audio', 'ProRes 422 HQ is the native editing codec, no transcoding needed.'], ['After Effects', 'Video + stills', 'Import ProRes clips and RAW or JPEG stills for comps and plates.'], ['Pro Tools', 'Audio', '24-bit, 48 kHz WAV files import without conversion.'], ['Lightroom', 'Photo', 'RAW and JPEG pairs open with the grade ready to adjust.']];
-const COV = [['Every asset', 'Video, audio and photo, in full resolution.'], ['Commercial use', 'Client and personal projects, no extra fees.'], ['Worldwide, perpetual', 'No territory limits and no expiry.'], ['No attribution', 'Credit is never required.'], ['All formats', 'ProRes and RAW video, 24-bit WAV, RAW and JPEG stills.']];
+const COMPAT = [['Premiere Pro', 'Video + zvuk', 'ProRes 422 HQ, H.264 i 24bitové WAV soubory rovnou na časovou osu.'], ['DaVinci Resolve', 'Video + zvuk', 'ProRes a fotografie RAW se otevřou nativně. WAV se importuje v plných 48 kHz.'], ['Final Cut Pro', 'Video + zvuk', 'ProRes 422 HQ je nativní střihový kodek, převod není potřeba.'], ['After Effects', 'Video + fotografie', 'Importujte klipy ProRes a fotografie RAW nebo JPEG do kompozic i jako podklady.'], ['Pro Tools', 'Zvuk', '24bitové WAV soubory s 48 kHz se importují bez převodu.'], ['Lightroom', 'Fotografie', 'Dvojice RAW a JPEG se otevřou s připravenou úpravou, kterou lze dál ladit.']];
+const COV = [['Každý asset', 'Video, zvuk i fotografie v plném rozlišení.'], ['Komerční využití', 'Klientské i osobní projekty, bez dalších poplatků.'], ['Celosvětově a trvale', 'Bez územního omezení a bez expirace.'], ['Bez uvádění autora', 'Uvedení autora není nikdy vyžadováno.'], ['Všechny formáty', 'Video ProRes a RAW, 24bitové WAV, fotografie RAW a JPEG.']];
 const DELIVERY = {Video:'ProRes 422 HQ + RAW', Audio:'WAV · 24-bit · 48 kHz', Photo:'RAW + JPEG'};
 const count = f => D.filter(f).length;
+const pl = (n, a, b, c) => n === 1 ? a : n >= 2 && n <= 4 ? b : c; // Czech plural forms
+const fold = s => String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); // search ignores diacritics
+const TL = {Video: 'Video', Audio: 'Zvuk', Photo: 'Fotografie'};
+const CHIP = {all: 'vše', video: 'video', audio: 'zvuk', photo: 'foto', saved: 'uložené'};
+const TITLES = {library: 'Knihovna', collections: 'Kolekce', about: 'O nás', compatibility: 'Kompatibilita', licence: 'Licence'};
 
 /* ---------- procedural imagery ---------- */
 const SC = [[0,'#3b5658','#c9b79a','rgba(255,214,160,.55)',.7],[1,'#0a1018','#16222e','rgba(255,170,90,.35)',.3],[0,'#1a2a2c','#4b6a68','rgba(120,220,200,.3)',.5],[2,'#20272a','#3a4347','rgba(255,255,255,.18)',.2],[0,'#232a2e','#556066','rgba(200,220,230,.3)',.6],[3,'#7f8f93','#cfd4d0','rgba(255,245,225,.6)',.5],[1,'#0b1117','#1d2a33','rgba(90,200,220,.35)',.6],[4,'#2c4448','#8aa3a0','rgba(255,230,190,.5)',.3],[2,'#2a2520','#5b4d3d','rgba(255,225,170,.45)',.8],[0,'#101a1c','#2a4244','rgba(46,230,200,.2)',.4],[1,'#2a2420','#6b5640','rgba(255,190,110,.5)',.5],[0,'#16222b','#40586a','rgba(170,210,240,.3)',.7]];
@@ -594,7 +652,14 @@ const bars = (n, seed) => { const r = rng(seed); return Array.from({length: n}, 
 /* ---------- state ---------- */
 const S = {type: 'all', q: '', sort: 'featured', co: null};
 let PASS = 0; // timestamp when the licence was bought, 0 = none
-const PRICE = 149;
+const PRICE = 149; // base price in EUR
+const CURS = ['CZK', 'EUR']; // first one is the default; the header switch offers these two
+const FX = {EUR: 1, USD: 1.12, CZK: 25}; // BACKEND: live exchange rates (CZK matches the rental page)
+let CUR = CURS[0];
+try { const c = localStorage.getItem('mlxcur'); if (CURS.includes(c)) CUR = c; } catch (e) {}
+const money = () => { const n = Math.round(PRICE * FX[CUR]); return CUR === 'CZK' ? n.toLocaleString('cs-CZ') + '\u00a0K\u010d' : CUR === 'USD' ? '$' + n : '\u20ac' + n; };
+const priceTag = () => `<span data-price>${money()}</span>`;
+function syncCur() { $('#cur').dataset.i = CURS.indexOf(CUR); $$('#cur button').forEach(b => b.setAttribute('aria-pressed', b.dataset.c === CUR)); $$('[data-price]').forEach(e => { e.textContent = money(); }); }
 let RET = null; // where to go back to after buying
 try { PASS = +localStorage.getItem('mlxpass') || 0; } catch (e) {}
 try { const old = JSON.parse(localStorage.getItem('mlxown') || '{}'), k = Object.values(old); if (!PASS && k.length) { PASS = Math.min(...k); localStorage.setItem('mlxpass', PASS); } } catch (e) {}
@@ -632,41 +697,41 @@ const crops = '<span class="crop a"></span><span class="crop b"></span><span cla
 let FAV = {};
 try { FAV = JSON.parse(localStorage.getItem('mlxfav') || '{}'); } catch (e) {}
 const saveFav = () => { try { localStorage.setItem('mlxfav', JSON.stringify(FAV)); } catch (e) {} try { navigator.storage && navigator.storage.persist && navigator.storage.persist().catch(() => {}); } catch (e) {} };
-const syncFav = el => { const on = !!FAV[el.dataset.fav]; el.classList.toggle('on', on); el.innerHTML = star(on); el.setAttribute('aria-pressed', on); el.setAttribute('aria-label', on ? 'Remove from favourites' : 'Save to favourites'); };
+const syncFav = el => { const on = !!FAV[el.dataset.fav]; el.classList.toggle('on', on); el.innerHTML = star(on); el.setAttribute('aria-pressed', on); el.setAttribute('aria-label', on ? 'Odebrat z oblíbených' : 'Uložit do oblíbených'); };
 addEventListener('storage', e => { if (e.key !== 'mlxfav') return; try { FAV = JSON.parse(e.newValue || '{}'); } catch (x) { FAV = {}; } $$('[data-fav]').forEach(syncFav); });
 const ICO_DL = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7.500 10.500 12 15l4.500-4.500M5 19h14"/></svg>';
 const star = on => `<svg viewBox="0 0 24 24" width="18" height="18" fill="${on ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="m12 3.500 2.600 5.300 5.900.9-4.300 4.100 1 5.800L12 16.800 6.800 19.600l1-5.800L3.500 9.700l5.900-.9z"/></svg>`;
 function tile(i) {
   const a = D[i], au = a.t === 'Audio', own = owned(i + 1), n = i + 1;
-  return `<a class="tile${own ? ' own' : ''}" data-i="${i}" href="#asset-${n}" aria-label="${esc(a.n)}, ${a.t}, ${a.s}"><img class="art" alt="" decoding="async" src="${thumb(i)}"${au ? ' style="opacity:.35"' : ''}>
+  return `<a class="tile${own ? ' own' : ''}" data-i="${i}" href="#asset-${n}" aria-label="${esc(a.n)}, ${TL[a.t]}, ${a.s}"><img class="art" alt="" decoding="async" src="${thumb(i)}"${au ? ' style="opacity:.35"' : ''}>
 ${a.t === 'Video' ? '<canvas class="live" width="480" height="270" aria-hidden="true"></canvas><span class="bar2" aria-hidden="true"><i></i><i></i><i></i></span>' : ''}${au ? `<div class="wave" aria-hidden="true">${bars(40, i + 3)}</div>` : ''}
 <div class="meta"><b>${a.n}</b><span class="mono">${a.s}</span></div>
-<span class="acts2"><span class="ic" role="button" tabindex="0" aria-label="Download" data-dl="${n}">${ICO_DL}</span><span class="ic${FAV[n] ? ' on' : ''}" role="button" tabindex="0" aria-label="${FAV[n] ? 'Remove from favourites' : 'Save to favourites'}" aria-pressed="${!!FAV[n]}" data-fav="${n}">${star(!!FAV[n])}</span></span></a>`;
+<span class="acts2"><span class="ic" role="button" tabindex="0" aria-label="Stáhnout" data-dl="${n}">${ICO_DL}</span><span class="ic${FAV[n] ? ' on' : ''}" role="button" tabindex="0" aria-label="${FAV[n] ? 'Odebrat z oblíbených' : 'Uložit do oblíbených'}" aria-pressed="${!!FAV[n]}" data-fav="${n}">${star(!!FAV[n])}</span></span></a>`;
 }
 function card(c) {
   const items = D.map((a, i) => i).filter(i => D[i].c === c), n = items.length;
-  return `<a class="pk" data-r style="--i:${c % 4}" href="#collection-${c + 1}"><span class="mono">${n} ${n === 1 ? 'item' : 'items'}</span><div class="th"><img alt="" decoding="async" src="${thumb(items[0])}"></div><div class="pn"><b>${CO[c]}</b><span class="mono">→</span></div></a>`;
+  return `<a class="pk" data-r style="--i:${c % 4}" href="#collection-${c + 1}"><span class="mono">${n} ${pl(n, 'položka', 'položky', 'položek')}</span><div class="th"><img alt="" decoding="async" src="${thumb(items[0])}"></div><div class="pn"><b>${CO[c]}</b><span class="mono">→</span></div></a>`;
 }
 const cards = list => list.map(card).join('');
 
 /* ---------- views ---------- */
 function home() {
-  const fmts = [['Video', 'clips', 0], ['Audio', 'tracks', 2], ['Photo', 'images', 3]];
-  const steps = [['Preview', 'Watch or listen in full. Previews carry a watermark.'], ['License', 'One payment unlocks the whole library.'], ['Download', 'Pick a resolution or bitrate and drop it into your edit.']];
-  const nav = [['Library', D.length + ' assets', '#library'], ['Licence', PASS ? 'Active' : '$' + PRICE + ' once', '#licence'], ['Compatibility', COMPAT.length + ' apps', '#compatibility'], ['Licence terms', 'Commercial · perpetual', '#about'], ['FAQ', '4 answers', '#faq']];
+  const fmts = [['Video', ['klip', 'klipy', 'klipů'], 0], ['Audio', ['stopa', 'stopy', 'stop'], 2], ['Photo', ['fotografie', 'fotografie', 'fotografií'], 3]];
+  const steps = [['Náhled', 'Přehrajte si video i zvuk celé. Náhledy mají vodoznak.'], ['Licence', 'Jedna platba odemkne celou knihovnu.'], ['Stažení', 'Vyberte rozlišení nebo datový tok a vložte soubor do střihu.']];
+  const nav = [['Knihovna', D.length + ' assetů', '#library'], ['Licence', PASS ? 'Aktivní' : priceTag() + ' jednorázově', '#licence'], ['Kompatibilita', COMPAT.length + ' aplikací', '#compatibility'], ['Podmínky licence', 'Komerční · trvalá', '#about'], ['FAQ', '4 odpovědi', '#faq']];
   const trio = [0, 1, 2].map(() => [...Array(CO.length).keys()]).flat();
   app.innerHTML = `<section class="dark hero"><canvas class="bg" id="hc" aria-hidden="true"></canvas><div class="wrap hero-in">
-<div><div class="mono">MLX Assets</div><h1><span>Footage.</span><span>Sound.</span><span>Stills.</span></h1><p>Find it, license it, drop it into your edit.</p></div>
-</div><div class="cue mono" aria-hidden="true"><span>Scroll</span><i></i></div></section>
-<div class="wrap"><form class="finder sfind" id="hs" role="search"><input type="search" placeholder="Search footage, sound, stills" aria-label="Search the library"><button class="btn solid">Search <span class="a">→</span></button></form></div>
-<section class="sec"><div class="wrap"><div class="sh" data-r><div><span class="mono">Pick a format</span><h2>What do you need?</h2></div></div>
-<div class="fcards">${fmts.map(([t, u, i], k) => `<a class="fcard" data-r style="--i:${k}" href="#library-${t.toLowerCase()}"><img alt="" decoding="async" src="${thumb(i)}"><span class="mono">${count(a => a.t === t)} ${u}</span><div class="row end"><h3>${t}</h3><span class="ar" aria-hidden="true">→</span></div></a>`).join('')}</div></div></section>
-<section class="sec"><div class="wrap"><div class="sh" data-r><div><span class="mono">Shot as sets</span><h2>Collections</h2></div><div class="cav"><button id="cp" aria-label="Previous collections">←</button><button id="cn" aria-label="Next collections">→</button><a class="mono" href="#collections">All collections</a></div></div></div>
+<div><div class="mono">MLX Assets</div><h1><span>Záběry.</span><span>Zvuky.</span><span>Fotky.</span></h1><p>Najděte to, licencujte to, vložte do střihu.</p></div>
+</div><div class="cue mono" aria-hidden="true"><span>Posunout</span><i></i></div></section>
+<div class="wrap"><form class="finder sfind" id="hs" role="search"><input type="search" placeholder="Hledat záběry, zvuky, fotky" aria-label="Prohledat knihovnu"><button class="btn solid">Hledat <span class="a">→</span></button></form></div>
+<section class="sec"><div class="wrap"><div class="sh" data-r><div><span class="mono">Vyberte formát</span><h2>Co potřebujete?</h2></div></div>
+<div class="fcards">${fmts.map(([t, u, i], k) => `<a class="fcard" data-r style="--i:${k}" href="#library-${t.toLowerCase()}"><img alt="" decoding="async" src="${thumb(i)}"><span class="mono">${count(a => a.t === t)} ${pl(count(a => a.t === t), u[0], u[1], u[2])}</span><div class="row end"><h3>${TL[t]}</h3><span class="ar" aria-hidden="true">→</span></div></a>`).join('')}</div></div></section>
+<section class="sec"><div class="wrap"><div class="sh" data-r><div><span class="mono">Natočeno v sadách</span><h2>Kolekce</h2></div><div class="cav"><button id="cp" aria-label="Předchozí kolekce">←</button><button id="cn" aria-label="Další kolekce">→</button><a class="mono" href="#collections">Všechny kolekce</a></div></div></div>
 <div class="car"><div class="trk" id="trk">${trio.map(c => card(c).replace(' data-r', '').replace(/ style="--i:\d"/, '')).join('')}</div></div></section>
-<section class="dark cta-band"><div class="wrap g"><div data-r><span class="mono">Licensing</span><h2>One licence.<br>Whole library.</h2><p>Need more than a clip or two? The licence unlocks every asset for $${PRICE}, once.</p>
-<div class="acts">${PASS ? '<a class="btn solid" href="#licence">Your licence <span class="a">→</span></a>' : '<a class="btn solid" href="#licence">Get the licence <span class="a">→</span></a>'}<a class="btn" href="#compatibility">Compatibility</a></div></div>
+<section class="dark cta-band"><div class="wrap g"><div data-r><span class="mono">Licencování</span><h2>Jedna licence.<br>Celá knihovna.</h2><p>Potřebujete víc než pár klipů? Licence odemkne každý asset za ${priceTag()}, jednorázově.</p>
+<div class="acts">${PASS ? '<a class="btn solid" href="#licence">Vaše licence <span class="a">→</span></a>' : '<a class="btn solid" href="#licence">Získat licenci <span class="a">→</span></a>'}<a class="btn" href="#compatibility">Kompatibilita</a></div></div>
 <ol class="steps">${steps.map(([h, t], k) => `<li data-r style="--i:${k}"><span class="mono">0${k + 1}</span><div><b>${h}</b><p>${t}</p></div></li>`).join('')}</ol></div></section>
-<section class="navband"><div class="wrap"><div class="sh" data-r><h2>Browse the site</h2></div>
+<section class="navband"><div class="wrap"><div class="sh" data-r><h2>Procházet web</h2></div>
 <div class="list" data-r>${nav.map(([t, u, h], k) => `<a style="--i:${k}" href="${h}"><strong>${t}</strong><span class="mono">${u}</span><span class="ar" aria-hidden="true">→</span></a>`).join('')}</div></div></section>`;
   const go = q => { Object.assign(S, {q, type: 'all', co: null}); location.hash = 'library'; };
   $('#hs').onsubmit = e => { e.preventDefault(); go($('#hs input').value.trim()); };
@@ -747,32 +812,32 @@ function home() {
 }
 
 function library() {
-  const title = S.co !== null ? CO[S.co] : 'Library';
+  const title = S.co !== null ? CO[S.co] : 'Knihovna';
   app.innerHTML = `<section class="pg"><div class="sh"><h1 class="pt"><b>${title}</b></h1><span class="mono" id="lc"></span></div>
-<div class="tools"><div class="chips mono" role="group" aria-label="Filter by type">${['all','video','audio','photo','saved'].map(k => `<button data-t="${k}" aria-pressed="${S.type === k}">${k}</button>`).join('')}</div>
-<form class="search" role="search" onsubmit="return false"><input id="q" type="search" placeholder="Search title, tag or collection" aria-label="Search the library" value="${esc(S.q)}"></form>
-<select id="so" aria-label="Sort"><option value="featured">Featured</option><option value="name">Name, A to Z</option></select><button class="mono lnk" id="fl" type="button" hidden>Copy link to saved</button></div>
+<div class="tools"><div class="chips mono" role="group" aria-label="Filtrovat podle typu">${['all','video','audio','photo','saved'].map(k => `<button data-t="${k}" aria-pressed="${S.type === k}">${CHIP[k]}</button>`).join('')}</div>
+<form class="search" role="search" onsubmit="return false"><input id="q" type="search" placeholder="Hledat název, štítek nebo kolekci" aria-label="Prohledat knihovnu" value="${esc(S.q)}"></form>
+<select id="so" aria-label="Řazení"><option value="featured">Doporučené</option><option value="name">Název, A–Z</option></select><button class="mono lnk" id="fl" type="button" hidden>Zkopírovat odkaz na uložené</button></div>
 <div class="grid lg" id="lg"></div></section>`;
   $('#so').value = S.sort;
   const fill = () => {
-    const words = S.q.toLowerCase().split(/\s+/).filter(Boolean);
+    const words = fold(S.q).split(/\s+/).filter(Boolean);
     let ids = D.map((a, i) => i).filter(i => {
       const a = D[i];
-      return (S.type === 'all' || (S.type === 'saved' ? !!FAV[i + 1] : a.t.toLowerCase() === S.type)) && (S.co === null || a.c === S.co) && words.every(w => `${a.n} ${a.t} ${a.k} ${CO[a.c]}`.toLowerCase().includes(w));
+      return (S.type === 'all' || (S.type === 'saved' ? !!FAV[i + 1] : a.t.toLowerCase() === S.type)) && (S.co === null || a.c === S.co) && words.every(w => fold(`${a.n} ${a.t} ${TL[a.t]} ${a.k} ${CO[a.c]}`).includes(w));
     });
-    if (S.sort === 'name') ids.sort((a, b) => D[a].n.localeCompare(D[b].n));
-    $('#lc').textContent = `${ids.length} of ${D.length} assets`;
+    if (S.sort === 'name') ids.sort((a, b) => D[a].n.localeCompare(D[b].n, 'cs'));
+    $('#lc').textContent = `${ids.length} z ${D.length} assetů`;
     $$('.chips button').forEach(b => b.setAttribute('aria-pressed', b.dataset.t === S.type));
     $('#lg').dataset.n = ids.length;
-    $('#lg').innerHTML = ids.length ? ids.map(tile).join('') : `<div class="empty"><b>Nothing matches${S.q ? ` “${esc(S.q)}”` : ''}.</b><span class="mute">Try a shorter search, or clear the filters to see everything.</span><button class="btn" id="clr">Clear filters</button></div>`;
+    $('#lg').innerHTML = ids.length ? ids.map(tile).join('') : `<div class="empty"><b>Nic neodpovídá${S.q ? ` „${esc(S.q)}“` : ''}.</b><span class="mute">Zkuste kratší hledání nebo zrušte filtry a zobrazte vše.</span><button class="btn" id="clr">Zrušit filtry</button></div>`;
     $$('#lg .tile').forEach((t, k) => t.style.setProperty('--i', Math.min(k, 12)));
-    if (S.type === 'saved' && !ids.length && !S.q) { const eb = $('#lg .empty b'), es = $('#lg .empty span'); if (eb) eb.textContent = 'No saved assets yet.'; if (es) es.textContent = 'Tap the star on any asset to keep it here.'; }
+    if (S.type === 'saved' && !ids.length && !S.q) { const eb = $('#lg .empty b'), es = $('#lg .empty span'); if (eb) eb.textContent = 'Zatím žádné uložené assety.'; if (es) es.textContent = 'Klepněte na hvězdičku u assetu a uložíte si ho sem.'; }
     $('#fl').hidden = !(S.type === 'saved' && Object.keys(FAV).length);
     const c = $('#clr'); if (c) c.onclick = () => { Object.assign(S, {q: '', type: 'all', co: null}); library(); };
   };
   $('#fl').onclick = async () => {
     const url = `${SITE}/#favs-${Object.keys(FAV).map(Number).sort((a, b) => a - b).join('.')}`;
-    try { await navigator.clipboard.writeText(url); toast('Link copied. Anyone who opens it can save your list.'); } catch (e) { toast(url); }
+    try { await navigator.clipboard.writeText(url); toast('Odkaz zkopírován. Kdokoli, kdo ho otevře, si může váš seznam uložit.'); } catch (e) { toast(url); }
   };
   $('#q').oninput = e => { S.q = e.target.value; fill(); };
   $('#so').onchange = e => { S.sort = e.target.value; fill(); };
@@ -781,16 +846,16 @@ function library() {
 }
 
 function collections() {
-  app.innerHTML = `<section class="pg"><div class="sh"><h1 class="pt"><b>Collections</b></h1><span class="mono">Footage, sound and stills shot together</span></div><div class="pks" style="margin-top:40px">${cards(CO.map((n, i) => i))}</div></section>`;
+  app.innerHTML = `<section class="pg"><div class="sh"><h1 class="pt"><b>Kolekce</b></h1><span class="mono">Záběry, zvuky a fotky natočené společně</span></div><div class="pks" style="margin-top:40px">${cards(CO.map((n, i) => i))}</div></section>`;
 }
 
 /* ---------- downloads: files are rendered in the browser, then saved ---------- */
 const QS = {
   Video: [['4K · 3840×2160', 3840, 2160], ['1080p · 1920×1080', 1920, 1080], ['720p · 1280×720', 1280, 720]],
-  Photo: [['Full · 4800×3200 JPG', 4800, 3200, 'image/jpeg', 'jpg'], ['Web · 2400×1600 WebP', 2400, 1600, 'image/webp', 'webp'], ['Preview · 1200×800 PNG', 1200, 800, 'image/png', 'png']],
-  Audio: [['High · 256 kbps', 256], ['Standard · 128 kbps', 128], ['Light · 64 kbps', 64]]
+  Photo: [['Plná · 4800×3200 JPG', 4800, 3200, 'image/jpeg', 'jpg'], ['Web · 2400×1600 WebP', 2400, 1600, 'image/webp', 'webp'], ['Náhled · 1200×800 PNG', 1200, 800, 'image/png', 'png']],
+  Audio: [['Vysoká · 256 kbps', 256], ['Standardní · 128 kbps', 128], ['Lehká · 64 kbps', 64]]
 };
-const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const slug = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const renderFile = (n, q, type) => new Promise((resolve, reject) => {
   const i = n - 1, c = document.createElement('canvas'), chunks = [];
   if (type === 'Photo') { c.width = q[1]; c.height = q[2]; paint(c, i, 0); return c.toBlob(resolve, q[3]); }
@@ -808,19 +873,19 @@ const renderFile = (n, q, type) => new Promise((resolve, reject) => {
 async function download(n, k, btn) {
   const a = D[n - 1], q = QS[a.t][k], label = btn.lastElementChild;
   const dl = window.claude && await claude.use('downloads');
-  if (!dl) return toast('Downloads aren’t available in this view.');
-  btn.disabled = true; label.textContent = a.t === 'Photo' ? 'Preparing…' : 'Rendering 5 s…';
+  if (!dl) return toast('Stahování v tomto zobrazení není dostupné.');
+  btn.disabled = true; label.textContent = a.t === 'Photo' ? 'Připravuji…' : 'Renderuji 5 s…';
   try {
     const blob = await renderFile(n, q, a.t), ext = a.t === 'Photo' ? q[4] : /mp4/.test(blob.type) ? 'mp4' : 'webm';
     await dl.save({filename: `mlx-${slug(a.n)}-${slug(q[0].split(' ')[0])}.${ext}`, data: blob});
-    label.textContent = 'Saved';
-  } catch (e) { label.textContent = e && e.code === 'declined' ? 'Download' : 'Failed, try again'; }
-  setTimeout(() => { label.textContent = 'Download'; btn.disabled = false; }, 2500);
+    label.textContent = 'Uloženo';
+  } catch (e) { label.textContent = e && e.code === 'declined' ? 'Stáhnout' : 'Selhalo, zkuste to znovu'; }
+  setTimeout(() => { label.textContent = 'Stáhnout'; btn.disabled = false; }, 2500);
 }
 async function certificate() {
   const dl = window.claude && await claude.use('downloads');
-  if (!dl) return toast('Downloads aren’t available in this view.');
-  try { await dl.save({filename: `mlx-licence-${licId()}.txt`, data: `MLX ASSETS — LICENCE CERTIFICATE\n\nLicence ID: ${licId()}\nCovers: the entire MLX Assets library\nIssued: ${new Date(PASS).toDateString()}\n\nOne-time licence held by the purchaser. Perpetual, worldwide, commercial use. No attribution required. Files may not be resold as standalone assets.\n`}); } catch (e) {}
+  if (!dl) return toast('Stahování v tomto zobrazení není dostupné.');
+  try { await dl.save({filename: `mlx-licence-${licId()}.txt`, data: `MLX ASSETS — CERTIFIKÁT LICENCE\n\nID licence: ${licId()}\nPokrývá: celou knihovnu MLX Assets\nVydáno: ${new Date(PASS).toLocaleDateString('cs-CZ')}\n\nJednorázová licence držená kupujícím. Trvalá, celosvětová, komerční využití. Uvedení autora se nevyžaduje. Soubory nelze dále prodávat jako samostatné assety.\n`}); } catch (e) {}
 }
 
 function skipIcon(dir) {
@@ -831,19 +896,19 @@ function asset(n) {
   const i = n - 1, a = D[i]; if (!a) return missing();
   const own = owned(n), still = a.t === 'Photo';
   const rel = [...D.keys()].filter(j => j !== i).sort((x, y) => (D[y].c === a.c) - (D[x].c === a.c) || (D[y].t === a.t) - (D[x].t === a.t)).slice(0, 3);
-  const rows = [['Type', a.t], ['Spec', a.s], ['Collection', CO[a.c]], ['Delivery', DELIVERY[a.t]], ['Licence', 'Perpetual · worldwide']];
-  app.innerHTML = `<section class="pg"><div class="ad"><div class="frame pv${own ? ' own' : ''}"><canvas id="cv" width="1280" height="800" role="img" aria-label="${esc(a.n)}, ${a.t.toLowerCase()} preview, ${a.s}"></canvas>${still ? '' : '<div class="ctl"><button id="pb">Play</button><div class="bar" id="sk" role="slider" tabindex="0" aria-label="Seek" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" aria-valuetext="0 of 10 seconds"><i id="pr"></i></div><span id="tm">00:00 / 00:10</span></div>'}</div>
-<div><div class="toprow"><a class="mono back" href="#library"><span class="ar" aria-hidden="true">←</span>Library</a><button class="mono shr" id="sh" type="button">Share<span class="ar" aria-hidden="true">↗</span></button></div><h1 class="pt">${a.n}</h1>
+  const rows = [['Typ', TL[a.t]], ['Parametry', a.s], ['Kolekce', CO[a.c]], ['Dodání', DELIVERY[a.t]], ['Licence', 'Trvalá · celosvětová']];
+  app.innerHTML = `<section class="pg"><div class="ad"><div class="frame pv${own ? ' own' : ''}"><canvas id="cv" width="1280" height="800" role="img" aria-label="${esc(a.n)}, náhled (${TL[a.t].toLowerCase()}), ${a.s}"></canvas>${still ? '' : '<div class="ctl"><button id="pb">Přehrát</button><div class="bar" id="sk" role="slider" tabindex="0" aria-label="Posun" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" aria-valuetext="0 z 10 sekund"><i id="pr"></i></div><span id="tm">00:00 / 00:10</span></div>'}</div>
+<div><div class="toprow"><a class="mono back" href="#library"><span class="ar" aria-hidden="true">←</span>Knihovna</a><button class="mono shr" id="sh" type="button">Sdílet<span class="ar" aria-hidden="true">↗</span></button></div><h1 class="pt">${a.n}</h1>
 <div class="dl">${rows.map(r => `<div><span class="mono">${r[0]}</span><span>${r[1]}</span></div>`).join('')}</div>
-${own ? '' : `<div class="price">$${PRICE}</div><button class="btn solid" id="lic">Get the licence <span class="a">→</span></button><p class="note mute">One payment unlocks this and every other asset.</p>`}
-<div class="mono" style="margin:32px 0 8px">Download</div><div class="dq">${QS[a.t].map((q, k) => `<button data-k="${k}"${own ? '' : ' disabled'}><span>${q[0]}</span><span class="mono">${own ? 'Download' : 'Locked'}</span></button>`).join('')}</div>
+${own ? '' : `<div class="price">${priceTag()}</div><button class="btn solid" id="lic">Získat licenci <span class="a">→</span></button><p class="note mute">Jedna platba odemkne tento i každý další asset.</p>`}
+<div class="mono" style="margin:32px 0 8px">Stažení</div><div class="dq">${QS[a.t].map((q, k) => `<button data-k="${k}"${own ? '' : ' disabled'}><span>${q[0]}</span><span class="mono">${own ? 'Stáhnout' : 'Zamčeno'}</span></button>`).join('')}</div>
 </div></div>
-<div class="sh" style="margin-top:80px"><h2>More like this</h2></div><div class="grid lg">${rel.map(tile).join('')}</div></section>`;
+<div class="sh" style="margin-top:80px"><h2>Podobné assety</h2></div><div class="grid lg">${rel.map(tile).join('')}</div></section>`;
   const c = $('#cv'), pb = $('#pb'); paint(c, i, 0);
   $('#sh').onclick = async () => {
-    const url = pageUrl('asset', i), data = {title: `${a.n} — MLX Assets`, text: `${a.n}, ${a.t.toLowerCase()}, ${a.s}`, url};
+    const url = pageUrl('asset', i), data = {title: `${a.n} — MLX Assets`, text: `${a.n}, ${TL[a.t].toLowerCase()}, ${a.s}`, url};
     if (navigator.share && matchMedia('(pointer: coarse)').matches) { try { await navigator.share(data); return; } catch (e) { if (e.name === 'AbortError') return; } }
-    try { await navigator.clipboard.writeText(url); toast('Link copied.'); } catch (e) { toast(url); }
+    try { await navigator.clipboard.writeText(url); toast('Odkaz zkopírován.'); } catch (e) { toast(url); }
   };
   if (still && !reduced && matchMedia('(hover: hover)').matches) {
     const fr = c.parentElement;
@@ -869,7 +934,7 @@ ${own ? '' : `<div class="price">$${PRICE}</div><button class="btn solid" id="li
     let playing = false, base = 0, t0p = 0, vis = 0, off = 0, tw = null, pRaf = 0, lastS = -1, aud = null;
     const pos = () => base + (playing ? (performance.now() - t0p) / 1000 : 0) + vis;      // unwrapped seconds
     const wrap = p => ((p % LEN) + LEN) % LEN;
-    const label = w => { const sec = Math.floor(w); if (sec !== lastS) { lastS = sec; tm.textContent = `00:${String(sec).padStart(2, '0')} / 00:10`; seekBar.setAttribute('aria-valuenow', sec); seekBar.setAttribute('aria-valuetext', `${sec} of 10 seconds`); } };
+    const label = w => { const sec = Math.floor(w); if (sec !== lastS) { lastS = sec; tm.textContent = `00:${String(sec).padStart(2, '0')} / 00:10`; seekBar.setAttribute('aria-valuenow', sec); seekBar.setAttribute('aria-valuetext', `${sec} z 10 sekund`); } };
     const sample = () => { if (aud) { aud.an.getByteFrequencyData(aud.freq); aud.an.getByteTimeDomainData(aud.time); } };
     const draw = () => { sample(); paint(c, i, pos(), aud); };
     const tick = () => {
@@ -886,7 +951,7 @@ ${own ? '' : `<div class="price">$${PRICE}</div><button class="btn solid" id="li
     stopProg = () => { cancelAnimationFrame(pRaf); pRaf = 0; };
     const play = () => {
       if (playing) return;
-      playing = true; t0p = performance.now(); pb.textContent = 'Pause'; seekBar.classList.remove('paused');
+      playing = true; t0p = performance.now(); pb.textContent = 'Pozastavit'; seekBar.classList.remove('paused');
       if (audio) {
         if (aud) aud.ac.resume();
         else {
@@ -900,7 +965,7 @@ ${own ? '' : `<div class="price">$${PRICE}</div><button class="btn solid" id="li
     const pause = () => {
       if (!playing) return;
       base += (performance.now() - t0p) / 1000; playing = false; cancelAnimationFrame(raf); raf = 0;
-      pb.textContent = 'Play'; seekBar.classList.add('paused'); if (aud) aud.ac.suspend(); draw();
+      pb.textContent = 'Přehrát'; seekBar.classList.add('paused'); if (aud) aud.ac.suspend(); draw();
     };
     const toggle = () => playing ? pause() : play();
     const skip = dir => {
@@ -946,59 +1011,59 @@ ${own ? '' : `<div class="price">$${PRICE}</div><button class="btn solid" id="li
 }
 
 function licence() {
-  const date = PASS ? new Date(PASS).toLocaleDateString('en-GB', {day: 'numeric', month: 'long', year: 'numeric'}) : '';
+  const date = PASS ? new Date(PASS).toLocaleDateString('cs-CZ', {day: 'numeric', month: 'long', year: 'numeric'}) : '';
   if (!PASS) {
-    app.innerHTML = `<section class="pg"><h1 class="pt"><b>One licence.</b><br><span class="mute">Every project.</span></h1><div class="plans one">
-<div class="plan"><span class="mono" style="color:var(--tx)"><i class="dot"></i>MLX Assets licence</span><div class="price">$${PRICE} <small>once</small></div><span class="mono">Pay once · yours to keep</span><button class="btn solid mono" id="buy">Get the licence</button></div>
-<div class="plan"><span class="mono">What you get</span><span class="mono">Every asset in the library</span><span class="mono">Unlimited downloads</span><span class="mono">No watermarks</span><span class="mono">Commercial use</span><span class="mono">Royalty-free</span><span class="mono">Perpetual · worldwide</span></div></div></section>`;
+    app.innerHTML = `<section class="pg"><h1 class="pt"><b>Jedna licence.</b><br><span class="mute">Každý projekt.</span></h1><div class="plans one">
+<div class="plan"><span class="mono" style="color:var(--tx)"><i class="dot"></i>Licence MLX Assets</span><div class="price">${priceTag()} <small>jednorázově</small></div><span class="mono">Zaplatíte jednou · navždy vaše</span><button class="btn solid mono" id="buy">Získat licenci</button></div>
+<div class="plan"><span class="mono">Co získáte</span><span class="mono">Každý asset v knihovně</span><span class="mono">Neomezená stahování</span><span class="mono">Žádné vodoznaky</span><span class="mono">Komerční využití</span><span class="mono">Bez licenčních poplatků</span><span class="mono">Trvalá · celosvětová</span></div></div></section>`;
     $('#buy').onclick = e => {
-      const b = e.currentTarget; b.disabled = true; b.textContent = 'Activating…';
-      setTimeout(() => { PASS = Date.now(); savePass(); badge(); toast('Licence active. Everything is unlocked.'); licence(); }, 900);
+      const b = e.currentTarget; b.disabled = true; b.textContent = 'Aktivuji…';
+      setTimeout(() => { PASS = Date.now(); savePass(); badge(); toast('Licence je aktivní. Vše je odemčeno.'); licence(); }, 900);
     };
     return;
   }
   const back = RET && RET.startsWith('#asset-') && D[+RET.slice(7) - 1];
-  app.innerHTML = `<section class="pg"><div class="sh"><h1 class="pt"><b>My licence</b></h1></div>
-<div class="dl end" style="margin-top:32px;max-width:680px">${[['Licence ID', licId()], ['Issued', date], ['Covers', 'The entire library'], ['Term', 'Perpetual · worldwide'], ['Use', 'Commercial']].map(r => `<div><span class="mono">${r[0]}</span><span>${r[1]}</span></div>`).join('')}</div>
-<div class="acts" style="margin-top:28px">${back ? `<a class="btn solid" href="${RET}">Back to ${esc(back.n)} <span class="a">→</span></a>` : '<a class="btn solid" href="#library">Browse the library <span class="a">→</span></a>'}<button class="btn" id="cert">Download certificate</button>${back ? '<a class="btn" href="#library">Browse the library</a>' : ''}</div>
-<div class="sh" style="margin-top:88px"><h2>What’s covered</h2></div><ol class="steps">${COV.map(([h, t], k) => `<li data-r style="--i:${k}"><span class="mono">0${k + 1}</span><div><b>${h}</b><p>${t}</p></div></li>`).join('')}</ol>
-<p style="margin-top:40px"><button class="mono" id="end" style="text-decoration:underline">Remove licence (demo)</button></p></section>`;
+  app.innerHTML = `<section class="pg"><div class="sh"><h1 class="pt"><b>Moje licence</b></h1></div>
+<div class="dl end" style="margin-top:32px;max-width:680px">${[['ID licence', licId()], ['Vydána', date], ['Pokrývá', 'Celou knihovnu'], ['Platnost', 'Trvalá · celosvětová'], ['Využití', 'Komerční']].map(r => `<div><span class="mono">${r[0]}</span><span>${r[1]}</span></div>`).join('')}</div>
+<div class="acts" style="margin-top:28px">${back ? `<a class="btn solid" href="${RET}">Zpět na ${esc(back.n)} <span class="a">→</span></a>` : '<a class="btn solid" href="#library">Procházet knihovnu <span class="a">→</span></a>'}<button class="btn" id="cert">Stáhnout certifikát</button>${back ? '<a class="btn" href="#library">Procházet knihovnu</a>' : ''}</div>
+<div class="sh" style="margin-top:88px"><h2>Co licence pokrývá</h2></div><ol class="steps">${COV.map(([h, t], k) => `<li data-r style="--i:${k}"><span class="mono">0${k + 1}</span><div><b>${h}</b><p>${t}</p></div></li>`).join('')}</ol>
+<p style="margin-top:40px"><button class="mono" id="end" style="text-decoration:underline">Odebrat licenci (demo)</button></p></section>`;
   $('#cert').onclick = () => certificate();
-  $('#end').onclick = () => { PASS = 0; savePass(); badge(); toast('Licence removed.'); licence(); };
+  $('#end').onclick = () => { PASS = 0; savePass(); badge(); toast('Licence odebrána.'); licence(); };
 }
 
 function about() {
-  const T = [['Commercial use', 'Use assets in client and personal work.'], ['Worldwide, perpetual', 'No territory limits and no expiry.'], ['No attribution', 'Credit is never required.'], ['One licence, all formats', 'Every delivery format is covered.']];
-  const F = [['Can I use assets in client work?', 'Yes. Every licence covers commercial projects.'], ['Which formats are included?', 'Video in ProRes and RAW, audio in 24-bit WAV, photos in RAW and JPEG.'], ['Can I resell the files?', 'No. Use them inside your projects, not as standalone files.'], ['Is it a subscription?', 'No. One payment, and the whole library is yours to use for good.']];
-  app.innerHTML = `<section class="pg"><h1 class="pt"><b>Cinematic.</b> Original.<br><span class="mute">Cleared.</span></h1>
-<p class="mute" style="max-width:420px;margin-top:28px">MLX Assets is a library of footage, sound and stills made to work together. Shot, recorded and graded in-house.</p>
+  const T = [['Komerční využití', 'Používejte assety v klientské i osobní práci.'], ['Celosvětově a trvale', 'Bez územního omezení a bez expirace.'], ['Bez uvádění autora', 'Uvedení autora není nikdy vyžadováno.'], ['Jedna licence, všechny formáty', 'Pokryty jsou všechny formáty dodání.']];
+  const F = [['Mohu assety použít v klientské práci?', 'Ano. Každá licence pokrývá komerční projekty.'], ['Které formáty jsou součástí?', 'Video ve formátech ProRes a RAW, zvuk jako 24bitové WAV, fotografie ve formátech RAW a JPEG.'], ['Mohu soubory dále prodávat?', 'Ne. Používejte je uvnitř svých projektů, ne jako samostatné soubory.'], ['Je to předplatné?', 'Ne. Jedna platba a celá knihovna je vaše natrvalo.']];
+  app.innerHTML = `<section class="pg"><h1 class="pt"><b>Filmové.</b> Původní.<br><span class="mute">Právně čisté.</span></h1>
+<p class="mute" style="max-width:420px;margin-top:28px">MLX Assets je knihovna záběrů, zvuků a fotografií vytvořených tak, aby spolu fungovaly. Natočeno, nahráno a barevně vyladěno ve vlastní režii.</p>
 <div class="terms">${T.map(t => `<div><h3>${t[0]}</h3><p>${t[1]}</p></div>`).join('')}</div>
-<div class="sh" style="margin-top:96px" id="faq"><h2>Questions</h2></div><div class="fq">${F.map(f => `<details><summary>${f[0]}</summary><p>${f[1]}</p></details>`).join('')}</div></section>`;
+<div class="sh" style="margin-top:96px" id="faq"><h2>Otázky</h2></div><div class="fq">${F.map(f => `<details><summary>${f[0]}</summary><p>${f[1]}</p></details>`).join('')}</div></section>`;
 }
 
 function compatibility() {
-  app.innerHTML = `<section class="pg"><h1 class="pt"><b>Works where</b><br><span class="mute">you work.</span></h1>
-<p class="mute" style="max-width:440px;margin-top:28px">Every asset ships in formats that open in the major editing, grading, sound and photo tools. No plugins, no conversion.</p>
+  app.innerHTML = `<section class="pg"><h1 class="pt"><b>Funguje tam,</b><br><span class="mute">kde pracujete.</span></h1>
+<p class="mute" style="max-width:440px;margin-top:28px">Každý asset se dodává ve formátech, které otevřou všechny hlavní nástroje pro střih, grading, zvuk i fotografii. Bez pluginů, bez převodu.</p>
 <div class="terms">${COMPAT.map(c => `<div><span class="mono">${c[1]}</span><h3 style="margin-top:10px">${c[0]}</h3><p>${c[2]}</p></div>`).join('')}</div>
-<div class="sh" style="margin-top:96px"><h2>What you receive</h2></div>
-<div class="dl">${Object.entries(DELIVERY).map(([k, v]) => `<div><span class="mono">${k}</span><span>${v}</span></div>`).join('')}<div></div></div>
-<div class="acts" style="margin-top:32px"><a class="btn solid" href="#library">Browse the library <span class="a">→</span></a><a class="btn" href="#pricing">Pricing</a></div></section>`;
+<div class="sh" style="margin-top:96px"><h2>Co dostanete</h2></div>
+<div class="dl">${Object.entries(DELIVERY).map(([k, v]) => `<div><span class="mono">${TL[k]}</span><span>${v}</span></div>`).join('')}<div></div></div>
+<div class="acts" style="margin-top:32px"><a class="btn solid" href="#library">Procházet knihovnu <span class="a">→</span></a><a class="btn" href="#pricing">Ceník</a></div></section>`;
 }
 
 function favs(arg) {
   const ids = [...new Set(String(arg || '').split('.').map(Number))].filter(n => D[n - 1]).slice(0, 60);
   if (!ids.length) return missing();
-  app.innerHTML = `<section class="pg"><div class="sh"><h1 class="pt"><b>Shared favourites</b></h1><span class="mono">${ids.length} ${ids.length === 1 ? 'asset' : 'assets'}</span></div>
-<div class="tools"><button class="btn" id="sv" type="button">Save these to my favourites</button></div>
+  app.innerHTML = `<section class="pg"><div class="sh"><h1 class="pt"><b>Sdílené oblíbené</b></h1><span class="mono">${ids.length} ${pl(ids.length, 'asset', 'assety', 'assetů')}</span></div>
+<div class="tools"><button class="btn" id="sv" type="button">Uložit do mých oblíbených</button></div>
 <div class="grid lg" id="lg">${ids.map(n => tile(n - 1)).join('')}</div></section>`;
   $$('#lg .tile').forEach((t, k) => t.style.setProperty('--i', Math.min(k, 12)));
-  $('#sv').onclick = () => { ids.forEach(n => { FAV[n] = 1; }); saveFav(); $$('[data-fav]').forEach(syncFav); toast(`Saved ${ids.length} ${ids.length === 1 ? 'asset' : 'assets'} to your favourites.`); };
-  return 'Shared favourites';
+  $('#sv').onclick = () => { ids.forEach(n => { FAV[n] = 1; }); saveFav(); $$('[data-fav]').forEach(syncFav); toast(`Uloženo ${ids.length} ${pl(ids.length, 'asset', 'assety', 'assetů')} do oblíbených.`); };
+  return 'Sdílené oblíbené';
 }
 
 function missing() {
-  app.innerHTML = `<section class="pg"><h1 class="pt"><b>Not found.</b></h1><p class="mute" style="margin:24px 0">That page or asset doesn’t exist.</p><a class="btn" href="#library">Browse the library</a></section>`;
-  return 'Not found';
+  app.innerHTML = `<section class="pg"><h1 class="pt"><b>Nenalezeno.</b></h1><p class="mute" style="margin:24px 0">Tato stránka ani asset neexistuje.</p><a class="btn" href="#library">Procházet knihovnu</a></section>`;
+  return 'Nenalezeno';
 }
 
 /* ---------- scroll reveal ---------- */
@@ -1016,20 +1081,20 @@ let rsT; addEventListener('resize', () => { clearTimeout(rsT); rsT = setTimeout(
 const badge = () => {
   const g = $('#gb');
   document.body.classList.toggle('pass', !!PASS);
-  g.textContent = PASS ? 'My licence' : 'Get licence'; g.href = '#licence';
+  g.textContent = PASS ? 'Moje licence' : 'Získat licenci'; g.href = '#licence';
 };
 function routeNow() {
   stop(); onResize = null; onScroll = null;
   const [name, arg] = (location.hash.slice(1) || ROUTE0 || 'home').split(/-(.+)/);
-  let nav = name, title = name[0].toUpperCase() + name.slice(1);
+  let nav = name, title = TITLES[name] || (name[0].toUpperCase() + name.slice(1));
   if (name === 'library') { S.co = null; S.type = ['video', 'audio', 'photo', 'saved'].includes(arg) ? arg : 'all'; library(); }
   else if (name === 'collection') { const c = (+arg || 0) - 1; if (!CO[c]) missing(); else { Object.assign(S, {co: c, type: 'all', q: ''}); library(); title = CO[c]; nav = 'collections'; } }
   else if (name === 'asset') { const r = asset(+arg); nav = 'library'; title = D[arg - 1] ? D[arg - 1].n : r; }
   else if (name === 'favs') { title = favs(arg); nav = 'library'; }
   else if (['licence', 'licences', 'pricing'].includes(name)) { licence(); nav = 'licence'; title = 'Licence'; }
-  else if ({home, collections, about, compatibility}[name]) { ({home, collections, about, compatibility})[name](); if (name === 'home') title = 'Footage, sound and stills'; }
+  else if ({home, collections, about, compatibility}[name]) { ({home, collections, about, compatibility})[name](); if (name === 'home') title = 'Záběry, zvuky a fotografie'; }
   else if (name === 'faq') { about(); nav = 'about'; $('#faq').scrollIntoView(); title = 'FAQ'; }
-  else { missing(); title = 'Not found'; }
+  else { missing(); title = 'Nenalezeno'; }
   document.title = `${title} — MLX Assets`;
   seoFor(name, arg);
   $('#rl').textContent = document.title;
@@ -1055,17 +1120,18 @@ app.addEventListener('pointerover', e => {
 app.addEventListener('pointerout', e => { if (liveTile && !liveTile.contains(e.relatedTarget)) stopLive(); });
 app.addEventListener('click', e => {
   const f = e.target.closest('[data-fav]'), d = e.target.closest('[data-dl]');
-  if (f) { e.preventDefault(); const n = f.dataset.fav; if (FAV[n]) delete FAV[n]; else FAV[n] = 1; saveFav(); syncFav(f); toast(FAV[n] ? 'Saved to favourites.' : 'Removed from favourites.'); }
-  else if (d) { e.preventDefault(); const n = +d.dataset.dl; if (!owned()) toast('Get the licence to download.'); location.hash = 'asset-' + n; }
+  if (f) { e.preventDefault(); const n = f.dataset.fav; if (FAV[n]) delete FAV[n]; else FAV[n] = 1; saveFav(); syncFav(f); toast(FAV[n] ? 'Uloženo do oblíbených.' : 'Odebráno z oblíbených.'); }
+  else if (d) { e.preventDefault(); const n = +d.dataset.dl; if (!owned()) toast('Pro stažení získejte licenci.'); location.hash = 'asset-' + n; }
 });
 app.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[data-fav],[data-dl]')) { e.preventDefault(); e.target.click(); } else if (e.key === ' ' && e.target.matches && e.target.matches('a.tile')) { e.preventDefault(); e.target.click(); } });
+$('#cur').addEventListener('click', e => { const b = e.target.closest('button[data-c]'); if (!b || b.dataset.c === CUR) return; CUR = b.dataset.c; try { localStorage.setItem('mlxcur', CUR); } catch (x) {} syncCur(); });
 $('#menu').onclick = () => { const o = $('#nav').classList.toggle('open'); $('#menu').setAttribute('aria-expanded', o); };
 $('#nl').onsubmit = e => {
   e.preventDefault();
   const em = $('#em'), m = $('#nm'), ok = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em.value.trim());
   em.setAttribute('aria-invalid', !ok);
   m.className = 'msg mono ' + (ok ? 'ok' : 'err');
-  m.textContent = ok ? 'Thanks. You’re on the list.' : 'Enter a valid email address, like name@studio.com.';
+  m.textContent = ok ? 'Děkujeme, jste v seznamu.' : 'Zadejte platnou e-mailovou adresu, například jmeno@studio.cz.';
   if (ok) em.value = ''; else em.focus();
 };
 addEventListener('keydown', e => {
@@ -1105,7 +1171,69 @@ function route() {
 }
 addEventListener('hashchange', route);
 const warm = (k = 0) => { if (k >= D.length) return; thumb(k); (window.requestIdleCallback || (f => setTimeout(f, 80)))(() => warm(k + 1)); };
-badge(); route(); warm();
+syncCur(); badge(); route(); warm();
+requestAnimationFrame(() => requestAnimationFrame(() => $('#cur').classList.add('ready')));
+})();
+</script>
+<script>
+/* ---------- page fade (to black when leaving for the other site, from black on arrival) + region prompt ---------- */
+(function(){
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,busy=false,tm=0;
+  function leave(href){
+    if(busy)return;busy=true;
+    document.body.classList.add('dk');
+    tm=setTimeout(function(){window.location.href=href},reduce?0:1050);
+  }
+  var go=document.getElementById('rgn-go'),base=go.getAttribute('href');
+  /* the switch link keeps the current #route, so the visitor lands on the same page of the other site */
+  function sync(){go.href=base+(location.hash||'')}
+  sync();addEventListener('hashchange',sync);
+  go.addEventListener('click',function(e){
+    if(e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+    sync();e.preventDefault();leave(go.href);
+  });
+  addEventListener('pageshow',function(e){if(e.persisted){clearTimeout(tm);busy=false;document.body.classList.remove('dk')}});
+
+  /* sits up in the header row when there is free space beside the Get licence button, otherwise just below the header */
+  function place(){
+    var bx=document.getElementById('region');bx.style.top='';
+    if(matchMedia('(max-width:760px)').matches)return;
+    var g=document.getElementById('gb');if(!g||!g.offsetParent)return;
+    var r=g.getBoundingClientRect(),left=document.documentElement.clientWidth-24-bx.offsetWidth;
+    if(left>=r.right+16)bx.style.top='calc(10px + env(safe-area-inset-top,0px))';
+  }
+  addEventListener('resize',place);
+  /* region prompt: top-right, shown on the first 5 opens of the site, countdown eases to a stop while hovered */
+  var box=document.getElementById('region'),bar=document.getElementById('rgn-bar'),KEY='mlx-region-dismissed',CNT='mlx-region-count',MAX=5;
+  try{
+    var seen=parseInt(localStorage.getItem(CNT)||'0',10)||0;
+    if(localStorage.getItem(KEY)||seen>=MAX){box.hidden=true;return}
+    localStorage.setItem(CNT,String(seen+1));
+  }catch(e){}
+  place();
+  var DUR=6000,p=0,rate=1,hold=false,run=false,last=0;
+  function hide(){run=false;box.classList.remove('on')}
+  function tick(now){
+    if(!run)return;
+    var dt=Math.min(64,now-last);last=now;
+    rate+=((hold?0:1)-rate)*(1-Math.exp(-dt/220));
+    p+=dt*rate/DUR;
+    bar.style.transform='scaleX('+Math.max(0,1-p)+')';
+    if(p>=1){hide();return}
+    requestAnimationFrame(tick);
+  }
+  box.addEventListener('pointerenter',function(){hold=true});
+  box.addEventListener('pointerleave',function(){hold=false});
+  box.addEventListener('focusin',function(){hold=true});
+  box.addEventListener('focusout',function(){hold=false});
+  setTimeout(function(){
+    box.classList.add('on');
+    setTimeout(function(){run=true;last=performance.now();requestAnimationFrame(tick)},600);
+  },1300);
+  document.getElementById('rgn-x').addEventListener('click',function(){
+    hide();
+    try{localStorage.setItem(KEY,'1')}catch(e){}
+  });
 })();
 </script>
 </body>
